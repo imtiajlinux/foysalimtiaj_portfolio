@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ExperienceController;
+use App\Http\Controllers\Admin\SkillController;
 
 
 /*
@@ -71,6 +72,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/data/experiences', [ExperienceController::class,'store']);
     Route::put('/admin/data/experiences/{experience}', [ExperienceController::class,'update' ]);
     Route::delete('/admin/data/experiences/{experience}', [ ExperienceController::class, 'destroy' ]);
+
+
+    Route::get('/admin/data/skills', [SkillController::class,'index']);
+    Route::post('/admin/data/skills', [SkillController::class,'store']);
+    Route::put('/admin/data/skills/{skill}', [SkillController::class,'update']);
+    Route::delete('/admin/data/skills/{skill}', [SkillController::class,'destroy']);
 
     Route::get('/admin/{any?}', function () {
         return view('app');
