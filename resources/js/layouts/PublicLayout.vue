@@ -8,9 +8,14 @@ import Footer from '../components/public/Footer.vue';
 
         <Navbar />
 
-        <main class="page-background">
+        <!-- <main class="page-background">
             <router-view />
+        </main> -->
+
+        <main>
+            <slot />
         </main>
+
 
         <Footer />
 
