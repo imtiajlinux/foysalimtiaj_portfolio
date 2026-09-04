@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ExperienceController;
 use App\Http\Controllers\Admin\SkillController;
+use App\Http\Controllers\Admin\EducationController;
+use App\Http\Controllers\Admin\ProjectController;
 
 
 /*
@@ -74,10 +76,22 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/admin/data/experiences/{experience}', [ ExperienceController::class, 'destroy' ]);
 
 
+    Route::get('/admin/data/educations', [ EducationController::class, 'index' ]);
+    Route::post('/admin/data/educations', [ EducationController::class,'store']);
+    Route::put('/admin/data/educations/{education}', [EducationController::class,'update']);
+    Route::delete('/admin/data/educations/{education}', [EducationController::class,'destroy']);
+
+
     Route::get('/admin/data/skills', [SkillController::class,'index']);
     Route::post('/admin/data/skills', [SkillController::class,'store']);
     Route::put('/admin/data/skills/{skill}', [SkillController::class,'update']);
     Route::delete('/admin/data/skills/{skill}', [SkillController::class,'destroy']);
+
+
+    Route::get('/admin/data/projects', [ProjectController::class,'index']);
+    Route::post('/admin/data/projects', [ProjectController::class,'store']);
+    Route::put('/admin/data/projects/{project}', [ProjectController::class,'update']);
+    Route::delete('/admin/data/projects/{project}', [ProjectController::class,'destroy']);
 
     Route::get('/admin/{any?}', function () {
         return view('app');
