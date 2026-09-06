@@ -105,49 +105,19 @@
 
                             <tbody>
 
-                                <tr
-                                    v-for="project in projects"
-                                    :key="project.name"
-                                >
-
-                                    <td>
-
-                                        <div class="project-name">
-
-                                            <div class="project-image">
-                                                {{ project.name.charAt(0) }}
-                                            </div>
-
-                                            <strong>
-                                                {{ project.name }}
-                                            </strong>
-
-                                        </div>
-
-                                    </td>
-
-                                    <td>
-                                        <span class="technology">
-                                            {{ project.technology }}
-                                        </span>
-                                    </td>
-
-                                    <td>
-
-                                        <span
-                                            class="status"
-                                            :class="project.statusClass"
-                                        >
-                                            {{ project.status }}
-                                        </span>
-
-                                    </td>
-
-                                    <td>
-                                        {{ project.date }}
-                                    </td>
-
-                                </tr>
+                              <tr v-for="project in projects" :key="project.id">
+                                <td>
+                                    {{ project.title ? project.title.charAt(0).toUpperCase() : '?' }}
+                                </td>
+                                <td>{{ project.title }}</td>
+                                <td>{{ project.technologies }}</td>
+                                <td>
+                                    <span :class="project.is_active ? 'status-published' : 'status-draft'">
+                                        {{ project.is_active ? 'Published' : 'Inactive' }}
+                                    </span>
+                                </td>
+                                <td>{{ new Date(project.created_at).toLocaleDateString() }}</td>
+                            </tr>
 
                             </tbody>
 
@@ -265,9 +235,34 @@
 <script setup>
 
 import AdminLayout from '../../layouts/AdminLayout.vue';
+import { onMounted, reactive, ref } from 'vue';
+import axios from 'axios';
+
+const loaddata = () => {
+    
+    axios.get('/admin/data/dashboard')
+        .then(response => {
+            const data = response.data;
+            console.log('Dashboard data:', data);
+            statistics[0].value = data.projects.length;
+            statistics[1].value = data.skills.length;
+            statistics[2].value = data.messages.length;
+            statistics[3].value = data.experiences.length;
+
+            projects.value = data.projects;
+            
+        })
+        .catch(error => {
+            console.error('Error fetching dashboard data:', error);
+        });
+}
+
+onMounted(() => {
+    loaddata();
+});
 
 
-const statistics = [
+const statistics = reactive([
 
     {
         title: 'Projects',
@@ -297,10 +292,10 @@ const statistics = [
         icon: 'bi bi-briefcase'
     }
 
-];
+]);
 
 
-const projects = [
+const projects = ref([
 
     {
         name: 'Portfolio Website',
@@ -326,7 +321,7 @@ const projects = [
         date: 'Aug 15, 2026'
     }
 
-];
+]);
 
 </script>
 

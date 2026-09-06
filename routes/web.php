@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\ExperienceController;
 use App\Http\Controllers\Admin\SkillController;
 use App\Http\Controllers\Admin\EducationController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MessageController;
 
 
 /*
@@ -59,12 +61,15 @@ Route::post('/admin/logout', [
 
 
 /*
-|--------------------------------------------------------------------------
 | Protected Admin Area
 |--------------------------------------------------------------------------
 */
 
 Route::middleware(['auth', 'admin'])->group(function () {
+
+
+    Route::get('/admin/data/dashboard', [DashboardController::class,'index']);
+
     Route::get('/admin/data/profile', [ ProfileController::class,'index']);
     Route::post('/admin/data/profile', [ProfileController::class,'update']);
 
@@ -92,6 +97,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/data/projects', [ProjectController::class,'store']);
     Route::put('/admin/data/projects/{project}', [ProjectController::class,'update']);
     Route::delete('/admin/data/projects/{project}', [ProjectController::class,'destroy']);
+
+
+    Route::get('/admin/data/messages', [MessageController::class, 'index']);
+    Route::get('/admin/data/messages/{message}', [MessageController::class, 'show']);
+    Route::put('/admin/data/messages/{message}/read', [MessageController::class, 'markAsRead']);
+    Route::delete('/admin/data/messages/{message}', [MessageController::class, 'destroy']);
 
     Route::get('/admin/{any?}', function () {
         return view('app');
