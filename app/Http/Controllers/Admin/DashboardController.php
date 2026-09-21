@@ -29,4 +29,11 @@ class DashboardController extends Controller
             'educations' => $educations,
         ]);
     }
+
+    public function unreadMessageCount()
+    {
+        return response()->json([
+            'count' => Message::where('is_read', false)->count(),
+        ]);
+    }
 }

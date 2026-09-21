@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\EducationController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\Admin\GalleryCategoryController;
+use App\Http\Controllers\Admin\GalleryImageController;
 
 
 /*
@@ -69,6 +71,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 
     Route::get('/admin/data/dashboard', [DashboardController::class,'index']);
+    Route::get('/admin/data/messages/unread-count', [DashboardController::class, 'unreadMessageCount']);
+
 
     Route::get('/admin/data/profile', [ ProfileController::class,'index']);
     Route::post('/admin/data/profile', [ProfileController::class,'update']);
@@ -103,6 +107,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/data/messages/{message}', [MessageController::class, 'show']);
     Route::put('/admin/data/messages/{message}/read', [MessageController::class, 'markAsRead']);
     Route::delete('/admin/data/messages/{message}', [MessageController::class, 'destroy']);
+
+
+    Route::get('/admin/data/gallery/categories', [GalleryCategoryController::class, 'index']);
+    Route::post('/admin/data/gallery/categories', [GalleryCategoryController::class, 'store']);
+    Route::put('/admin/data/gallery/categories/{category}', [GalleryCategoryController::class, 'update']);
+    Route::delete('/admin/data/gallery/categories/{category}', [GalleryCategoryController::class, 'destroy']);
+
+    Route::get('/admin/data/gallery/images', [GalleryImageController::class, 'index']);
+    Route::post('/admin/data/gallery/images', [GalleryImageController::class, 'store']);
+    Route::post('/admin/data/gallery/images/{image}', [GalleryImageController::class, 'update']);
+    Route::delete('/admin/data/gallery/images/{image}', [GalleryImageController::class, 'destroy']);
 
     Route::get('/admin/{any?}', function () {
         return view('app');

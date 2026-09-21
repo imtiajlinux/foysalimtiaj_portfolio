@@ -166,6 +166,20 @@ const routes = [
         },
     },
 
+    // Admin gallery
+    {
+        path: '/admin/gallery',
+
+        name: 'admin.gallery',
+
+        component: () =>
+            import('../views/admin/Gallery.vue'),
+
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
 
     /*
     |--------------------------------------------------------------------------

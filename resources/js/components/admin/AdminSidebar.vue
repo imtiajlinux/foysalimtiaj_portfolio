@@ -129,6 +129,23 @@
                 </router-link>
 
 
+                <router-link
+                    to="/admin/gallery"
+                    class="sidebar-link"
+                    active-class="active"
+                >
+                    <span class="icon">
+                        <i class="bi bi-images"></i>
+                    </span>
+
+                    <span class="link-text">
+                        Gallery
+                    </span>
+                </router-link>
+
+                
+
+
                 <div class="menu-title mt-4">
                     COMMUNICATION
                 </div>
@@ -148,8 +165,8 @@
                         Messages
                     </span>
 
-                    <span class="badge bg-danger ms-auto">
-                        3
+                    <span v-if="unreadCount > 0" class="badge bg-danger ms-auto">
+                        {{ unreadCount > 99 ? '99+' : unreadCount }}
                     </span>
                 </router-link>
 
@@ -209,10 +226,7 @@
                     <small>Administrator</small>
                 </div>
 
-                <button
-                    type="button"
-                    class="user-menu"
-                >
+                <button type="button" class="user-menu" >
                     <i class="bi bi-three-dots-vertical"></i>
                 </button>
 
@@ -225,6 +239,15 @@
 
 
 <script setup>
+
+import { onMounted } from 'vue';
+import { useUnreadMessages } from '../../composables/useUnreadMessages';
+
+const { unreadCount, fetchUnreadCount } = useUnreadMessages();
+
+onMounted(() => {
+    fetchUnreadCount();
+});
 
 const props = defineProps({
     sidebarOpen: {
