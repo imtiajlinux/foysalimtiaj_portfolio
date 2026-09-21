@@ -13,11 +13,11 @@
             <div class="brand">
 
                 <div class="brand-logo">
-                    FI
+                    {{ authUser?.name?.charAt(0)?.toUpperCase() || 'A' }}
                 </div>
 
                 <div class="brand-text">
-                    <strong>Foysal Imtiaj</strong>
+                    <strong>{{ authUser?.name || 'Admin' }}</strong>
                     <small>Admin Panel</small>
                 </div>
 
@@ -218,17 +218,17 @@
             <div class="admin-user">
 
                 <div class="user-avatar">
-                    FI
+                    {{  authUser?.name?.charAt(0)?.toUpperCase() || 'A' }}
                 </div>
 
                 <div class="user-info">
-                    <strong>Foysal Imtiaj</strong>
+                    <strong>{{ authUser?.name || 'Admin' }}</strong>
                     <small>Administrator</small>
                 </div>
 
-                <button type="button" class="user-menu" >
+                <!-- <button type="button" class="user-menu" >
                     <i class="bi bi-three-dots-vertical"></i>
-                </button>
+                </button> -->
 
             </div>
 
@@ -240,9 +240,10 @@
 
 <script setup>
 
-import { onMounted } from 'vue';
+import { onMounted , inject } from 'vue';
 import { useUnreadMessages } from '../../composables/useUnreadMessages';
 
+const authUser = inject('authUser');
 const { unreadCount, fetchUnreadCount } = useUnreadMessages();
 
 onMounted(() => {

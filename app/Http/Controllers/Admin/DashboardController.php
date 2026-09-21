@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\Experience;
 use App\Models\Message;
 use App\Models\Education;
+use App\Models\GalleryImage;
 
 
 class DashboardController extends Controller
@@ -20,6 +21,7 @@ class DashboardController extends Controller
         $experiences = Experience::all();
         $messages = Message::all();
         $educations = Education::all();
+        $galleryImages = GalleryImage::all();
 
         return response()->json([
             'skills' => $skills,
@@ -27,6 +29,7 @@ class DashboardController extends Controller
             'experiences' => $experiences,
             'messages' => $messages,
             'educations' => $educations,
+            'galleryImages' => $galleryImages,
         ]);
     }
 

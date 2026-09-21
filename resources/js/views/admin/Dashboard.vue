@@ -29,7 +29,7 @@
             <div
                 v-for="stat in statistics"
                 :key="stat.title"
-                class="col-xl-3 col-md-6"
+                class="col-xl-2 col-md-6"
             >
 
                 <div class="stat-card">
@@ -149,7 +149,7 @@
                     <div class="quick-actions">
 
                         <router-link
-                            to="/admin/projects/create"
+                            to="/admin/projects"
                             class="quick-action"
                         >
 
@@ -220,6 +220,7 @@
 
                         </router-link>
 
+
                     </div>
 
                 </div>
@@ -249,6 +250,9 @@ const loaddata = () => {
             statistics[1].value = data.skills.length;
             statistics[2].value = data.messages.length;
             statistics[3].value = data.experiences.length;
+            statistics[4].value = data.galleryImages.length;
+            statistics[5].value = data.educations.length;
+
 
             projects.value = data.projects;
             
@@ -291,6 +295,18 @@ const statistics = reactive([
         value: '05',
         description: 'Work experiences',
         icon: 'bi bi-briefcase'
+    },
+    {
+        title: 'Gallery Images',
+        value: '05',
+        description: 'Images in gallery',
+        icon: 'bi bi-images'
+    },
+    {
+    title: 'Educational Background',
+    value: '05',
+    description: 'Educational qualifications',
+    icon: 'bi bi-book'
     }
 
 ]);

@@ -23,7 +23,7 @@
 
 <body>
 
-    <div id="app"></div>
+    <div id="app"  data-user='@json($authUser)'></div>
 
 </body>
 

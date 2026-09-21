@@ -11,7 +11,7 @@
 
             <div class="page-info d-none d-md-block">
                 <h6>Dashboard</h6>
-                <span>Welcome back, Foysal</span>
+                <span>Welcome back, {{ authUser?.name || 'Admin' }}</span>
             </div>
 
         </div>
@@ -20,19 +20,19 @@
         <div class="navbar-right">
 
             <!-- Search -->
-            <button class="nav-icon">
+            <!-- <button class="nav-icon">
                 <i class="bi bi-search"></i>
-            </button>
+            </button> -->
 
 
             <!-- Notification -->
-            <button class="nav-icon notification-btn">
+            <!-- <button class="nav-icon notification-btn">
 
                 <i class="bi bi-bell"></i>
 
                 <span class="notification-dot"></span>
 
-            </button>
+            </button> -->
 
 
             <div class="navbar-divider"></div>
@@ -45,13 +45,13 @@
                     aria-expanded="false">
 
                     <div class="profile-avatar">
-                        FI
+                        {{ authUser?.name?.charAt(0)?.toUpperCase() || 'A' }}
                     </div>
 
                     <div class="profile-info d-none d-sm-flex">
 
                         <strong>
-                            Foysal Imtiaj
+                            {{authUser?.name || 'Admin'}}
                         </strong>
 
                         <span>
@@ -109,6 +109,9 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useAuth } from '../../stores/auth';
+import { inject } from 'vue';
+
+const authUser = inject('authUser');
 
 defineEmits([
     'toggle-sidebar'
