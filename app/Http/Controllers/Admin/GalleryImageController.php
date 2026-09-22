@@ -7,6 +7,7 @@ use App\Models\GalleryImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use App\Models\GalleryCategory;
 
 class GalleryImageController extends Controller
 {
@@ -249,6 +250,29 @@ class GalleryImageController extends Controller
             'success' => true,
             'message' =>
             'Gallery image deleted successfully.',
+        ]);
+    }
+
+
+    public function getFrontimages()
+    {
+        $categories = GalleryCategory::with([
+            'images' => function ($query) {
+                $query->where('is_active', true)
+                    ->orderBy('priority')
+                    ->orderByDesc('id');
+            }
+        ])
+            ->whereHas('images', function ($query) {
+                $query->where('is_active', true);
+            })
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'categories' => $categories,
         ]);
     }
 }

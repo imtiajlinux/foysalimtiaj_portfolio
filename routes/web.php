@@ -11,6 +11,9 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\GalleryCategoryController;
 use App\Http\Controllers\Admin\GalleryImageController;
+use App\Http\Controllers\Public\HomeController;
+use App\Http\Controllers\Public\AboutController;
+
 
 
 /*
@@ -23,6 +26,13 @@ Route::get('/', function () {
     return view('app');
 });
 
+Route::get('/data/home', [HomeController::class, 'index']);
+
+Route::post('/data/messages', [MessageController::class, 'store']);
+Route::get('/data/projects', [ProjectController::class, 'projectData']);
+Route::get('/data/gallery', [GalleryImageController::class, 'getFrontimages']);
+Route::get('/data/about', [AboutController::class, 'index']);
+
 Route::get('/projects', function () {
     return view('app');
 });
@@ -32,6 +42,9 @@ Route::get('/gallery', function () {
 });
 
 Route::get('/contact', function () {
+    return view('app');
+});
+Route::get('/about', function () {
     return view('app');
 });
 

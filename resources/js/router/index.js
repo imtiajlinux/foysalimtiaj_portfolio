@@ -47,6 +47,13 @@ const routes = [
     },
 
 
+    {
+        path: '/about',
+        name: 'about',
+        component: () => import('../views/public/About.vue')
+    },
+
+
     /*
     |--------------------------------------------------------------------------
     | Authentication

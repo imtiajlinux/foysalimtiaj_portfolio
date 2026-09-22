@@ -209,4 +209,19 @@ class ProjectController extends Controller
             File::delete($fullPath);
         }
     }
+
+
+    public function projectData()
+    {
+        $projects = Project::where('is_active', true)
+            ->orderByDesc('is_featured')
+            ->orderBy('sort_order')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'projects' => $projects,
+        ]);
+    }
 }
