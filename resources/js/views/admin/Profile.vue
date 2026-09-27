@@ -6,13 +6,8 @@
                 <p class="page-sub">Manage your portfolio profile information.</p>
             </div>
 
-            <div v-if="successMessage" class="notice notice-success">
-                {{ successMessage }}
-            </div>
-
-            <div v-if="generalError" class="notice notice-error">
-                {{ generalError }}
-            </div>
+            <div v-if="successMessage" class="notice notice-success">{{ successMessage }}</div>
+            <div v-if="generalError" class="notice notice-error">{{ generalError }}</div>
 
             <div class="row g-4">
                 <div class="col-lg-8">
@@ -22,6 +17,7 @@
                                 <div class="section-head">
                                     <h3>Basic details</h3>
                                 </div>
+
                                 <div class="field-grid">
                                     <div class="field" :class="{ 'has-error': errors.name }">
                                         <label for="name">Name</label>
@@ -72,6 +68,7 @@
                                 <div class="section-head">
                                     <h3>Biography</h3>
                                 </div>
+
                                 <div class="field-grid">
                                     <div class="field field-wide">
                                         <label for="short_bio">Short bio</label>
@@ -89,6 +86,7 @@
                                 <div class="section-head">
                                     <h3>Address</h3>
                                 </div>
+
                                 <div class="field-grid">
                                     <div class="field field-wide">
                                         <label for="current_address">Current address</label>
@@ -106,41 +104,50 @@
                                 <div class="section-head">
                                     <h3>Media</h3>
                                 </div>
+
                                 <div class="field-grid">
                                     <div class="field">
                                         <label>Profile photo</label>
+
                                         <div class="upload-zone">
                                             <label v-if="!profilePhotoPreview" for="profile_photo_field" class="upload-zone-inner">
                                                 <span class="upload-icon">+</span>
                                                 <span class="upload-text">Click to upload</span>
                                                 <span class="upload-hint">PNG or JPG, up to 6MB</span>
                                             </label>
+
                                             <div v-else class="upload-preview-wrap">
                                                 <img :src="profilePhotoPreview" class="upload-preview profile-preview" alt="Profile preview">
+
                                                 <div class="upload-actions">
                                                     <label for="profile_photo_field" class="upload-replace" style="margin-bottom:0px;">Replace</label>
                                                     <button type="button" class="remove-btn" @click="removeProfilePhoto">Remove</button>
                                                 </div>
                                             </div>
+
                                             <input id="profile_photo_field" ref="profilePhotoInput" type="file" accept="image/*" class="visually-hidden-input" @change="handleProfilePhoto">
                                         </div>
                                     </div>
 
                                     <div class="field">
                                         <label>Cover image</label>
+
                                         <div class="upload-zone upload-zone-wide">
                                             <label v-if="!coverImagePreview" for="cover_image_field" class="upload-zone-inner">
                                                 <span class="upload-icon">+</span>
                                                 <span class="upload-text">Click to upload</span>
                                                 <span class="upload-hint">PNG or JPG, up to 6MB</span>
                                             </label>
+
                                             <div v-else class="upload-preview-wrap">
                                                 <img :src="coverImagePreview" class="upload-preview cover-preview" alt="Cover preview">
+
                                                 <div class="upload-actions">
                                                     <label for="cover_image_field" class="upload-replace" style="margin-bottom:0px;">Replace</label>
                                                     <button type="button" class="remove-btn" @click="removeCoverImage">Remove</button>
                                                 </div>
                                             </div>
+
                                             <input id="cover_image_field" ref="coverImageInput" type="file" accept="image/*" class="visually-hidden-input" @change="handleCoverImage">
                                         </div>
                                     </div>
@@ -173,9 +180,7 @@
                             <h3>{{ form.name || 'Your name' }}</h3>
                             <p class="preview-title">{{ form.title || 'Professional title' }}</p>
 
-                            <p v-if="form.short_bio" class="preview-bio">
-                                {{ form.short_bio }}
-                            </p>
+                            <p v-if="form.short_bio" class="preview-bio">{{ form.short_bio }}</p>
 
                             <div class="preview-meta">
                                 <div v-if="form.email" class="preview-item">
@@ -207,16 +212,12 @@ import AdminLayout from '../../layouts/AdminLayout.vue';
 
 const profilePhotoInput = ref(null);
 const coverImageInput = ref(null);
-
 const loading = ref(false);
 const saving = ref(false);
-
 const successMessage = ref('');
 const generalError = ref('');
-
 const profilePhotoPreview = ref('');
 const coverImagePreview = ref('');
-
 const profilePhotoFile = ref(null);
 const coverImageFile = ref(null);
 
@@ -298,9 +299,7 @@ const loadProfile = async () => {
 };
 
 const validateImage = file => {
-    if (!file) {
-        return false;
-    }
+    if (!file) return false;
 
     if (!file.type.startsWith('image/')) {
         generalError.value = 'Please select a valid image file.';
@@ -390,7 +389,6 @@ const saveProfile = async () => {
 
     try {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
         const formData = new FormData();
 
         Object.keys(form).forEach(key => {
@@ -438,7 +436,7 @@ const saveProfile = async () => {
 
         successMessage.value = data.message || 'Profile updated successfully.';
 
-       if (data.profile.profile_photo_url) {
+        if (data.profile.profile_photo_url) {
             profilePhotoPreview.value = data.profile.profile_photo_url;
         }
 
@@ -789,7 +787,9 @@ onBeforeUnmount(() => {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ---------- Preview card ---------- */

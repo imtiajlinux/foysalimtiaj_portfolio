@@ -247,6 +247,14 @@ const routes = [
         },
     },
 
+
+    {
+        path: '/admin/social-media',
+        name: 'admin.social-media',
+        component: () => import('../views/admin/SocialMedia.vue'),
+        meta: { requiresAuth: true }
+    }
+
 ];
 
 

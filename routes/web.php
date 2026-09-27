@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\GalleryCategoryController;
 use App\Http\Controllers\Admin\GalleryImageController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\AboutController;
+use App\Http\Controllers\Admin\SocialMediaController;
 
 
 
@@ -131,6 +132,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/data/gallery/images', [GalleryImageController::class, 'store']);
     Route::post('/admin/data/gallery/images/{image}', [GalleryImageController::class, 'update']);
     Route::delete('/admin/data/gallery/images/{image}', [GalleryImageController::class, 'destroy']);
+
+
+    Route::get('/admin/data/social-media', [SocialMediaController::class, 'index']);
+    Route::post('/admin/data/social-media', [SocialMediaController::class, 'store']);
+    Route::put('/admin/data/social-media/{socialMedia}', [SocialMediaController::class, 'update']);
+    Route::delete('/admin/data/social-media/{socialMedia}', [SocialMediaController::class, 'destroy']);
 
     Route::get('/admin/{any?}', function () {
         return view('app');

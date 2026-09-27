@@ -8,9 +8,7 @@
 
             <div class="panel">
                 <div class="panel-head">
-                    <div class="panel-icon">
-                        <i class="bi bi-shield-lock"></i>
-                    </div>
+                    <div class="panel-icon"><i class="bi bi-shield-lock"></i></div>
                     <div>
                         <h3>Change password</h3>
                         <p>Update your admin account password.</p>
@@ -21,19 +19,8 @@
                     <div class="field" :class="{ 'has-error': errors.current_password }">
                         <label for="current_password">Current password</label>
                         <div class="field-input">
-                            <input
-                                id="current_password"
-                                v-model="form.current_password"
-                                :type="showCurrentPassword ? 'text' : 'password'"
-                                placeholder="Enter current password"
-                                autocomplete="current-password"
-                            >
-                            <button
-                                type="button"
-                                class="toggle-visibility"
-                                :aria-label="showCurrentPassword ? 'Hide password' : 'Show password'"
-                                @click="showCurrentPassword = !showCurrentPassword"
-                            >
+                            <input id="current_password" v-model="form.current_password" :type="showCurrentPassword ? 'text' : 'password'" placeholder="Enter current password" autocomplete="current-password">
+                            <button type="button" class="toggle-visibility" :aria-label="showCurrentPassword ? 'Hide password' : 'Show password'" @click="showCurrentPassword = !showCurrentPassword">
                                 <i :class="showCurrentPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
                             </button>
                         </div>
@@ -43,31 +30,15 @@
                     <div class="field" :class="{ 'has-error': errors.password }">
                         <label for="password">New password</label>
                         <div class="field-input">
-                            <input
-                                id="password"
-                                v-model="form.password"
-                                :type="showPassword ? 'text' : 'password'"
-                                placeholder="Enter new password"
-                                autocomplete="new-password"
-                            >
-                            <button
-                                type="button"
-                                class="toggle-visibility"
-                                :aria-label="showPassword ? 'Hide password' : 'Show password'"
-                                @click="showPassword = !showPassword"
-                            >
+                            <input id="password" v-model="form.password" :type="showPassword ? 'text' : 'password'" placeholder="Enter new password" autocomplete="new-password">
+                            <button type="button" class="toggle-visibility" :aria-label="showPassword ? 'Hide password' : 'Show password'" @click="showPassword = !showPassword">
                                 <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
                             </button>
                         </div>
 
                         <div v-if="form.password" class="strength">
                             <div class="strength-bars">
-                                <span
-                                    v-for="n in 4"
-                                    :key="n"
-                                    class="bar"
-                                    :class="{ filled: n <= passwordStrength.score, [strengthClass]: n <= passwordStrength.score }"
-                                ></span>
+                                <span v-for="n in 4" :key="n" class="bar" :class="{ filled: n <= passwordStrength.score, [strengthClass]: n <= passwordStrength.score }"></span>
                             </div>
                             <span class="strength-label" :class="strengthClass">{{ passwordStrength.label }}</span>
                         </div>
@@ -79,29 +50,13 @@
                     <div class="field" :class="{ 'has-error': errors.password_confirmation }">
                         <label for="password_confirmation">Confirm new password</label>
                         <div class="field-input">
-                            <input
-                                id="password_confirmation"
-                                v-model="form.password_confirmation"
-                                :type="showConfirmation ? 'text' : 'password'"
-                                placeholder="Confirm new password"
-                                autocomplete="new-password"
-                            >
-                            <button
-                                type="button"
-                                class="toggle-visibility"
-                                :aria-label="showConfirmation ? 'Hide password' : 'Show password'"
-                                @click="showConfirmation = !showConfirmation"
-                            >
+                            <input id="password_confirmation" v-model="form.password_confirmation" :type="showConfirmation ? 'text' : 'password'" placeholder="Confirm new password" autocomplete="new-password">
+                            <button type="button" class="toggle-visibility" :aria-label="showConfirmation ? 'Hide password' : 'Show password'" @click="showConfirmation = !showConfirmation">
                                 <i :class="showConfirmation ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
                             </button>
                         </div>
                         <p v-if="errors.password_confirmation" class="field-error">{{ errors.password_confirmation[0] }}</p>
-                        <p
-                            v-else-if="form.password_confirmation && form.password_confirmation !== form.password"
-                            class="field-hint mismatch"
-                        >
-                            Doesn't match the new password yet.
-                        </p>
+                        <p v-else-if="form.password_confirmation && form.password_confirmation !== form.password" class="field-hint mismatch">Doesn't match the new password yet.</p>
                     </div>
 
                     <div v-if="successMessage" class="notice notice-success">
@@ -150,9 +105,7 @@ const showConfirmation = ref(false);
 const passwordStrength = computed(() => {
     const value = form.password;
 
-    if (!value) {
-        return { score: 0, label: '' };
-    }
+    if (!value) return { score: 0, label: '' };
 
     let score = 0;
     if (value.length >= 8) score++;
@@ -189,7 +142,6 @@ const changePassword = async () => {
     } catch (error) {
         if (error.response?.status === 422) {
             errors.value = error.response.data.errors || {};
-
             generalError.value = error.response.data.message || '';
         } else {
             generalError.value = 'Something went wrong. Please try again.';
@@ -208,8 +160,6 @@ const changePassword = async () => {
     color: #14131C;
 }
 
-/* ---------- Page head ---------- */
-
 .page-head {
     margin-bottom: 28px;
 }
@@ -227,8 +177,6 @@ const changePassword = async () => {
     color: #6B6875;
     margin: 0;
 }
-
-/* ---------- Panel ---------- */
 
 .panel {
     max-width: 480px;
@@ -272,8 +220,6 @@ const changePassword = async () => {
     color: #6B6875;
     margin: 0;
 }
-
-/* ---------- Fields ---------- */
 
 .field {
     margin-bottom: 24px;
@@ -351,8 +297,6 @@ const changePassword = async () => {
     color: #C24A4A;
 }
 
-/* ---------- Password strength ---------- */
-
 .strength {
     display: flex;
     align-items: center;
@@ -391,8 +335,6 @@ const changePassword = async () => {
 .strength-label.good { color: #4A4CE0; }
 .strength-label.strong { color: #2F7D4F; }
 
-/* ---------- Notices ---------- */
-
 .notice {
     display: flex;
     align-items: center;
@@ -415,8 +357,6 @@ const changePassword = async () => {
     border-color: #E7B6B6;
     color: #9A3B3B;
 }
-
-/* ---------- Submit ---------- */
 
 .submit-row {
     display: flex;

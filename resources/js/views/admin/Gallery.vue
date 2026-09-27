@@ -5,17 +5,9 @@
                 <h4>Gallery</h4>
                 <p>Manage gallery categories and images.</p>
             </div>
-
             <div class="header-actions">
-                <button class="btn btn-outline-dark" @click="openCategoryModal()">
-                    <i class="bi bi-folder-plus me-2"></i>
-                    Category
-                </button>
-
-                <button class="btn btn-dark" @click="openUploadModal">
-                    <i class="bi bi-images me-2"></i>
-                    Add Images
-                </button>
+                <button class="btn btn-outline-dark" @click="openCategoryModal()"><i class="bi bi-folder-plus me-2"></i>Category</button>
+                <button class="btn btn-dark" @click="openUploadModal"><i class="bi bi-images me-2"></i>Add Images</button>
             </div>
         </div>
 
@@ -26,58 +18,22 @@
                     <h6>Gallery Categories</h6>
                     <small>Organize your gallery images.</small>
                 </div>
-
-                <button class="btn btn-sm btn-dark" @click="openCategoryModal()">
-                    <i class="bi bi-plus-lg me-1"></i>
-                    Add Category
-                </button>
+                <button class="btn btn-sm btn-dark" @click="openCategoryModal()"><i class="bi bi-plus-lg me-1"></i>Add Category</button>
             </div>
 
             <div class="category-list">
-                <button
-                    class="category-item"
-                    :class="{ active: selectedCategory === '' }"
-                    @click="selectCategory('')"
-                >
-                    <span>
-                        <i class="bi bi-grid me-2"></i>
-                        All Images
-                    </span>
+                <button class="category-item" :class="{ active: selectedCategory === '' }" @click="selectCategory('')">
+                    <span><i class="bi bi-grid me-2"></i>All Images</span>
                     <strong>{{ totalImages }}</strong>
                 </button>
 
-                <button
-                    v-for="category in categories"
-                    :key="category.id"
-                    class="category-item"
-                    :class="{ active: selectedCategory == category.id }"
-                    @click="selectCategory(category.id)"
-                >
-                    <span>
-                        <i class="bi bi-folder me-2"></i>
-                        {{ category.name }}
-                    </span>
-
+                <button v-for="category in categories" :key="category.id" class="category-item" :class="{ active: selectedCategory == category.id }" @click="selectCategory(category.id)">
+                    <span><i class="bi bi-folder me-2"></i>{{ category.name }}</span>
                     <span class="category-right">
                         <strong>{{ category.images_count }}</strong>
-
-                        <span
-                            class="category-actions"
-                            @click.stop
-                        >
-                            <button
-                                class="btn btn-sm btn-light"
-                                @click="openCategoryModal(category)"
-                            >
-                                <i class="bi bi-pencil"></i>
-                            </button>
-
-                            <button
-                                class="btn btn-sm btn-light text-danger"
-                                @click="deleteCategory(category)"
-                            >
-                                <i class="bi bi-trash"></i>
-                            </button>
+                        <span class="category-actions" @click.stop>
+                            <button class="btn btn-sm btn-light" @click="openCategoryModal(category)"><i class="bi bi-pencil"></i></button>
+                            <button class="btn btn-sm btn-light text-danger" @click="deleteCategory(category)"><i class="bi bi-trash"></i></button>
                         </span>
                     </span>
                 </button>
@@ -88,165 +44,73 @@
         <div class="content-card">
             <div class="card-header-custom">
                 <div>
-                    <h6>
-                        {{ selectedCategoryName || 'All Images' }}
-                    </h6>
-                    <small>
-                        {{ filteredImages.length }} image(s)
-                    </small>
+                    <h6>{{ selectedCategoryName || 'All Images' }}</h6>
+                    <small>{{ filteredImages.length }} image(s)</small>
                 </div>
             </div>
 
             <div class="row g-4 p-3">
-                <div
-                    v-for="image in filteredImages"
-                    :key="image.id"
-                    class="col-xl-3 col-lg-4 col-md-6"
-                >
+                <div v-for="image in filteredImages" :key="image.id" class="col-xl-3 col-lg-4 col-md-6">
                     <div class="gallery-card">
                         <div class="gallery-image">
-                            <img
-                                :src="getImageUrl(image.image)"
-                                :alt="image.title"
-                            >
-
-                            <span class="priority-badge">
-                                #{{ image.priority }}
-                            </span>
-
-                            <span
-                                class="status-badge"
-                                :class="image.is_active ? 'active' : 'inactive'"
-                            >
-                                {{ image.is_active ? 'Active' : 'Inactive' }}
-                            </span>
+                            <img :src="getImageUrl(image.image)" :alt="image.title">
+                            <span class="priority-badge">#{{ image.priority }}</span>
+                            <span class="status-badge" :class="image.is_active ? 'active' : 'inactive'">{{ image.is_active ? 'Active' : 'Inactive' }}</span>
                         </div>
 
                         <div class="gallery-content">
-                            <div class="image-category">
-                                {{ image.category?.name }}
-                            </div>
-
+                            <div class="image-category">{{ image.category?.name }}</div>
                             <h6>{{ image.title }}</h6>
-
-                            <p v-if="image.short_description">
-                                {{ image.short_description }}
-                            </p>
-
+                            <p v-if="image.short_description">{{ image.short_description }}</p>
                             <div class="image-actions">
-                                <button
-                                    class="btn btn-sm btn-light"
-                                    @click="openEditModal(image)"
-                                >
-                                    <i class="bi bi-pencil me-1"></i>
-                                    Edit
-                                </button>
-
-                                <button
-                                    class="btn btn-sm btn-outline-danger"
-                                    @click="deleteImage(image)"
-                                >
-                                    <i class="bi bi-trash"></i>
-                                </button>
+                                <button class="btn btn-sm btn-light" @click="openEditModal(image)"><i class="bi bi-pencil me-1"></i>Edit</button>
+                                <button class="btn btn-sm btn-outline-danger" @click="deleteImage(image)"><i class="bi bi-trash"></i></button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div
-                    v-if="!loading && filteredImages.length === 0"
-                    class="col-12"
-                >
+                <div v-if="!loading && filteredImages.length === 0" class="col-12">
                     <div class="empty-state">
                         <i class="bi bi-images"></i>
                         <h5>No Images Found</h5>
                         <p>There are no images in this category.</p>
-
-                        <button
-                            class="btn btn-dark"
-                            @click="openUploadModal"
-                        >
-                            Add Images
-                        </button>
+                        <button class="btn btn-dark" @click="openUploadModal">Add Images</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Category Modal -->
-        <div
-            class="modal fade"
-            id="categoryModal"
-            tabindex="-1"
-            aria-hidden="true"
-        >
+        <div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">
-                            {{ categoryForm.id ? 'Edit Category' : 'Add Category' }}
-                        </h5>
-
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                        ></button>
+                        <h5 class="modal-title">{{ categoryForm.id ? 'Edit Category' : 'Add Category' }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
                     <form @submit.prevent="saveCategory">
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label">Category Name</label>
-
-                                <input
-                                    v-model="categoryForm.name"
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="Example: Wedding"
-                                    required
-                                >
+                                <input v-model="categoryForm.name" type="text" class="form-control" placeholder="Example: Wedding" required>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Description</label>
-
-                                <textarea
-                                    v-model="categoryForm.description"
-                                    class="form-control"
-                                    rows="4"
-                                    placeholder="Category description"
-                                ></textarea>
+                                <textarea v-model="categoryForm.description" class="form-control" rows="4" placeholder="Category description"></textarea>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Sort Order</label>
-
-                                <input
-                                    v-model.number="categoryForm.sort_order"
-                                    type="number"
-                                    min="0"
-                                    class="form-control"
-                                >
+                                <input v-model.number="categoryForm.sort_order" type="number" min="0" class="form-control">
                             </div>
                         </div>
 
                         <div class="modal-footer">
-                            <button
-                                type="button"
-                                class="btn btn-light"
-                                data-bs-dismiss="modal"
-                            >
-                                Cancel
-                            </button>
-
-                            <button
-                                type="submit"
-                                class="btn btn-dark"
-                                :disabled="savingCategory"
-                            >
-                                {{ savingCategory ? 'Saving...' : 'Save Category' }}
-                            </button>
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-dark" :disabled="savingCategory">{{ savingCategory ? 'Saving...' : 'Save Category' }}</button>
                         </div>
                     </form>
                 </div>
@@ -254,57 +118,24 @@
         </div>
 
         <!-- Upload Images Modal -->
-        <div
-            class="modal fade"
-            id="uploadModal"
-            tabindex="-1"
-            aria-hidden="true"
-        >
+        <div class="modal fade" id="uploadModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">
-                            Add Gallery Images
-                        </h5>
-
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                        ></button>
+                        <h5 class="modal-title">Add Gallery Images</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
                     <form @submit.prevent="uploadImages">
                         <div class="modal-body">
                             <div class="mb-4">
-                                <label class="form-label">
-                                    Select Images
-                                </label>
-
-                                <input
-                                    ref="uploadInput"
-                                    type="file"
-                                    class="form-control"
-                                    accept=".jpg,.jpeg,.png,.webp"
-                                    multiple
-                                    @change="handleFiles"
-                                    required
-                                >
-
-                                <small class="text-muted">
-                                    JPG, JPEG, PNG, WEBP. Maximum 5 MB per image.
-                                </small>
+                                <label class="form-label">Select Images</label>
+                                <input ref="uploadInput" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp" multiple @change="handleFiles" required>
+                                <small class="text-muted">JPG, JPEG, PNG, WEBP. Maximum 5 MB per image.</small>
                             </div>
 
-                            <div
-                                v-if="uploadItems.length"
-                                class="upload-items"
-                            >
-                                <div
-                                    v-for="(item, index) in uploadItems"
-                                    :key="index"
-                                    class="upload-item"
-                                >
+                            <div v-if="uploadItems.length" class="upload-items">
+                                <div v-for="(item, index) in uploadItems" :key="index" class="upload-item">
                                     <div class="upload-preview">
                                         <img :src="item.preview" :alt="item.file.name">
                                     </div>
@@ -312,100 +143,39 @@
                                     <div class="upload-form">
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
-                                                <label class="form-label">
-                                                    Category
-                                                </label>
-
-                                                <select
-                                                    v-model="item.gallery_category_id"
-                                                    class="form-select"
-                                                    required
-                                                >
-                                                    <option value="" disabled>
-                                                        Select Category
-                                                    </option>
-
-                                                    <option
-                                                        v-for="category in categories"
-                                                        :key="category.id"
-                                                        :value="category.id"
-                                                    >
-                                                        {{ category.name }}
-                                                    </option>
+                                                <label class="form-label">Category</label>
+                                                <select v-model="item.gallery_category_id" class="form-select" required>
+                                                    <option value="" disabled>Select Category</option>
+                                                    <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
                                                 </select>
                                             </div>
 
                                             <div class="col-md-6 mb-3">
-                                                <label class="form-label">
-                                                    Title
-                                                </label>
-
-                                                <input
-                                                    v-model="item.title"
-                                                    type="text"
-                                                    class="form-control"
-                                                    required
-                                                >
+                                                <label class="form-label">Title</label>
+                                                <input v-model="item.title" type="text" class="form-control" required>
                                             </div>
 
                                             <div class="col-12 mb-3">
-                                                <label class="form-label">
-                                                    Short Description
-                                                </label>
-
-                                                <input
-                                                    v-model="item.short_description"
-                                                    type="text"
-                                                    class="form-control"
-                                                    placeholder="Short description"
-                                                >
+                                                <label class="form-label">Short Description</label>
+                                                <input v-model="item.short_description" type="text" class="form-control" placeholder="Short description">
                                             </div>
 
                                             <div class="col-12 mb-3">
-                                                <label class="form-label">
-                                                    Long Description
-                                                </label>
-
-                                                <textarea
-                                                    v-model="item.long_description"
-                                                    class="form-control"
-                                                    rows="3"
-                                                    placeholder="Long description"
-                                                ></textarea>
+                                                <label class="form-label">Long Description</label>
+                                                <textarea v-model="item.long_description" class="form-control" rows="3" placeholder="Long description"></textarea>
                                             </div>
 
                                             <div class="col-md-6 mb-3">
-                                                <label class="form-label">
-                                                    Priority
-                                                </label>
-
-                                                <input
-                                                    v-model.number="item.priority"
-                                                    type="number"
-                                                    min="0"
-                                                    class="form-control"
-                                                >
-
-                                                <small class="text-muted">
-                                                    Lower number appears first.
-                                                </small>
+                                                <label class="form-label">Priority</label>
+                                                <input v-model.number="item.priority" type="number" min="0" class="form-control">
+                                                <small class="text-muted">Lower number appears first.</small>
                                             </div>
 
                                             <div class="col-md-6 mb-3">
-                                                <label class="form-label d-block">
-                                                    Status
-                                                </label>
-
+                                                <label class="form-label d-block">Status</label>
                                                 <div class="form-check form-switch mt-2">
-                                                    <input
-                                                        v-model="item.is_active"
-                                                        class="form-check-input"
-                                                        type="checkbox"
-                                                    >
-
-                                                    <label class="form-check-label">
-                                                        Active
-                                                    </label>
+                                                    <input v-model="item.is_active" class="form-check-input" type="checkbox">
+                                                    <label class="form-check-label">Active</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -413,31 +183,15 @@
                                 </div>
                             </div>
 
-                            <div
-                                v-else
-                                class="select-image-box"
-                            >
+                            <div v-else class="select-image-box">
                                 <i class="bi bi-cloud-arrow-up"></i>
                                 <p>Select one or more images to continue.</p>
                             </div>
                         </div>
 
                         <div class="modal-footer">
-                            <button
-                                type="button"
-                                class="btn btn-light"
-                                data-bs-dismiss="modal"
-                            >
-                                Cancel
-                            </button>
-
-                            <button
-                                type="submit"
-                                class="btn btn-dark"
-                                :disabled="saving || !uploadItems.length"
-                            >
-                                {{ saving ? 'Uploading...' : 'Upload Images' }}
-                            </button>
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-dark" :disabled="saving || !uploadItems.length">{{ saving ? 'Uploading...' : 'Upload Images' }}</button>
                         </div>
                     </form>
                 </div>
@@ -445,159 +199,66 @@
         </div>
 
         <!-- Edit Image Modal -->
-        <div
-            class="modal fade"
-            id="editImageModal"
-            tabindex="-1"
-            aria-hidden="true"
-        >
+        <div class="modal fade" id="editImageModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">
-                            Edit Gallery Image
-                        </h5>
-
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                        ></button>
+                        <h5 class="modal-title">Edit Gallery Image</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
 
                     <form @submit.prevent="updateImage">
                         <div class="modal-body">
-                            <div
-                                v-if="editForm.currentImage"
-                                class="edit-preview mb-4"
-                            >
-                                <img
-                                    :src="getImageUrl(editForm.currentImage)"
-                                    :alt="editForm.title"
-                                >
+                            <div v-if="editForm.currentImage" class="edit-preview mb-4">
+                                <img :src="getImageUrl(editForm.currentImage)" :alt="editForm.title">
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">
-                                    Replace Image
-                                </label>
-
-                                <input
-                                    ref="editInput"
-                                    type="file"
-                                    class="form-control"
-                                    accept=".jpg,.jpeg,.png,.webp"
-                                    @change="handleEditFile"
-                                >
+                                <label class="form-label">Replace Image</label>
+                                <input ref="editInput" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp" @change="handleEditFile">
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">
-                                    Category
-                                </label>
-
-                                <select
-                                    v-model="editForm.gallery_category_id"
-                                    class="form-select"
-                                    required
-                                >
-                                    <option
-                                        v-for="category in categories"
-                                        :key="category.id"
-                                        :value="category.id"
-                                    >
-                                        {{ category.name }}
-                                    </option>
+                                <label class="form-label">Category</label>
+                                <select v-model="editForm.gallery_category_id" class="form-select" required>
+                                    <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
                                 </select>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">
-                                    Title
-                                </label>
-
-                                <input
-                                    v-model="editForm.title"
-                                    type="text"
-                                    class="form-control"
-                                    required
-                                >
+                                <label class="form-label">Title</label>
+                                <input v-model="editForm.title" type="text" class="form-control" required>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">
-                                    Short Description
-                                </label>
-
-                                <input
-                                    v-model="editForm.short_description"
-                                    type="text"
-                                    class="form-control"
-                                >
+                                <label class="form-label">Short Description</label>
+                                <input v-model="editForm.short_description" type="text" class="form-control">
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label">
-                                    Long Description
-                                </label>
-
-                                <textarea
-                                    v-model="editForm.long_description"
-                                    class="form-control"
-                                    rows="5"
-                                ></textarea>
+                                <label class="form-label">Long Description</label>
+                                <textarea v-model="editForm.long_description" class="form-control" rows="5"></textarea>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">
-                                        Priority
-                                    </label>
-
-                                    <input
-                                        v-model.number="editForm.priority"
-                                        type="number"
-                                        min="0"
-                                        class="form-control"
-                                    >
+                                    <label class="form-label">Priority</label>
+                                    <input v-model.number="editForm.priority" type="number" min="0" class="form-control">
                                 </div>
 
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label d-block">
-                                        Status
-                                    </label>
-
+                                    <label class="form-label d-block">Status</label>
                                     <div class="form-check form-switch mt-2">
-                                        <input
-                                            v-model="editForm.is_active"
-                                            class="form-check-input"
-                                            type="checkbox"
-                                        >
-
-                                        <label class="form-check-label">
-                                            Active
-                                        </label>
+                                        <input v-model="editForm.is_active" class="form-check-input" type="checkbox">
+                                        <label class="form-check-label">Active</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="modal-footer">
-                            <button
-                                type="button"
-                                class="btn btn-light"
-                                data-bs-dismiss="modal"
-                            >
-                                Cancel
-                            </button>
-
-                            <button
-                                type="submit"
-                                class="btn btn-dark"
-                                :disabled="saving"
-                            >
-                                {{ saving ? 'Updating...' : 'Update Image' }}
-                            </button>
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-dark" :disabled="saving">{{ saving ? 'Updating...' : 'Update Image' }}</button>
                         </div>
                     </form>
                 </div>
@@ -618,10 +279,8 @@ const selectedCategory = ref('');
 const loading = ref(false);
 const saving = ref(false);
 const savingCategory = ref(false);
-
 const uploadInput = ref(null);
 const editInput = ref(null);
-
 const uploadItems = ref([]);
 
 let categoryModal = null;
@@ -647,27 +306,18 @@ const editForm = reactive({
     file: null,
 });
 
-
 const totalImages = computed(() => images.value.length);
 
-
 const filteredImages = computed(() => {
-    if (!selectedCategory.value) {
-        return images.value;
-    }
+    if (!selectedCategory.value) return images.value;
 
     return images.value.filter(
-        image =>
-            Number(image.gallery_category_id) ===
-            Number(selectedCategory.value)
+        image => Number(image.gallery_category_id) === Number(selectedCategory.value)
     );
 });
 
-
 const selectedCategoryName = computed(() => {
-    if (!selectedCategory.value) {
-        return '';
-    }
+    if (!selectedCategory.value) return '';
 
     const category = categories.value.find(
         item => Number(item.id) === Number(selectedCategory.value)
@@ -676,33 +326,24 @@ const selectedCategoryName = computed(() => {
     return category?.name || '';
 });
 
-
 const getImageUrl = image => {
     return `/uploads/gallery/${image}`;
 };
 
-
 const loadCategories = async () => {
     try {
-        const response = await axios.get(
-            '/admin/data/gallery/categories'
-        );
-
+        const response = await axios.get('/admin/data/gallery/categories');
         categories.value = response.data.categories;
     } catch (error) {
         console.error('Category loading error:', error);
     }
 };
 
-
 const loadImages = async () => {
     loading.value = true;
 
     try {
-        const response = await axios.get(
-            '/admin/data/gallery/images'
-        );
-
+        const response = await axios.get('/admin/data/gallery/images');
         images.value = response.data.images;
     } catch (error) {
         console.error('Gallery loading error:', error);
@@ -711,19 +352,13 @@ const loadImages = async () => {
     }
 };
 
-
 const loadData = async () => {
-    await Promise.all([
-        loadCategories(),
-        loadImages(),
-    ]);
+    await Promise.all([loadCategories(), loadImages()]);
 };
-
 
 const selectCategory = categoryId => {
     selectedCategory.value = categoryId;
 };
-
 
 const resetCategoryForm = () => {
     categoryForm.id = null;
@@ -731,7 +366,6 @@ const resetCategoryForm = () => {
     categoryForm.description = '';
     categoryForm.sort_order = 0;
 };
-
 
 const openCategoryModal = category => {
     resetCategoryForm();
@@ -746,86 +380,57 @@ const openCategoryModal = category => {
     categoryModal.show();
 };
 
-
 const saveCategory = async () => {
     savingCategory.value = true;
 
     try {
         if (categoryForm.id) {
-            await axios.put(
-                `/admin/data/gallery/categories/${categoryForm.id}`,
-                {
-                    name: categoryForm.name,
-                    description: categoryForm.description,
-                    sort_order: categoryForm.sort_order,
-                }
-            );
+            await axios.put(`/admin/data/gallery/categories/${categoryForm.id}`, {
+                name: categoryForm.name,
+                description: categoryForm.description,
+                sort_order: categoryForm.sort_order,
+            });
         } else {
-            await axios.post(
-                '/admin/data/gallery/categories',
-                {
-                    name: categoryForm.name,
-                    description: categoryForm.description,
-                    sort_order: categoryForm.sort_order,
-                }
-            );
+            await axios.post('/admin/data/gallery/categories', {
+                name: categoryForm.name,
+                description: categoryForm.description,
+                sort_order: categoryForm.sort_order,
+            });
         }
 
         categoryModal.hide();
-
         await loadData();
-
     } catch (error) {
         console.error('Category save error:', error);
-
-        alert(
-            error.response?.data?.message ||
-            'Unable to save category.'
-        );
+        alert(error.response?.data?.message || 'Unable to save category.');
     } finally {
         savingCategory.value = false;
     }
 };
 
-
 const deleteCategory = async category => {
     if (category.images_count > 0) {
-        alert(
-            'This category contains images. Delete or move the images first.'
-        );
+        alert('This category contains images. Delete or move the images first.');
         return;
     }
 
-    if (!confirm(`Delete "${category.name}"?`)) {
-        return;
-    }
+    if (!confirm(`Delete "${category.name}"?`)) return;
 
     try {
-        await axios.delete(
-            `/admin/data/gallery/categories/${category.id}`
-        );
-
+        await axios.delete(`/admin/data/gallery/categories/${category.id}`);
         await loadData();
-
     } catch (error) {
-        alert(
-            error.response?.data?.message ||
-            'Unable to delete category.'
-        );
+        alert(error.response?.data?.message || 'Unable to delete category.');
     }
 };
-
 
 const openUploadModal = () => {
     uploadItems.value = [];
 
-    if (uploadInput.value) {
-        uploadInput.value.value = '';
-    }
+    if (uploadInput.value) uploadInput.value.value = '';
 
     uploadModal.show();
 };
-
 
 const handleFiles = event => {
     const files = Array.from(event.target.files);
@@ -833,9 +438,7 @@ const handleFiles = event => {
     uploadItems.value = files.map((file, index) => ({
         file,
         preview: URL.createObjectURL(file),
-        gallery_category_id: selectedCategory.value || (
-            categories.value[0]?.id || ''
-        ),
+        gallery_category_id: selectedCategory.value || (categories.value[0]?.id || ''),
         title: file.name.replace(/\.[^/.]+$/, ''),
         short_description: '',
         long_description: '',
@@ -844,11 +447,8 @@ const handleFiles = event => {
     }));
 };
 
-
 const uploadImages = async () => {
-    if (!uploadItems.value.length) {
-        return;
-    }
+    if (!uploadItems.value.length) return;
 
     saving.value = true;
 
@@ -856,70 +456,31 @@ const uploadImages = async () => {
         const formData = new FormData();
 
         uploadItems.value.forEach((item, index) => {
-            formData.append(
-                `items[${index}][gallery_category_id]`,
-                item.gallery_category_id
-            );
-
-            formData.append(
-                `items[${index}][image]`,
-                item.file
-            );
-
-            formData.append(
-                `items[${index}][title]`,
-                item.title
-            );
-
-            formData.append(
-                `items[${index}][short_description]`,
-                item.short_description
-            );
-
-            formData.append(
-                `items[${index}][long_description]`,
-                item.long_description
-            );
-
-            formData.append(
-                `items[${index}][priority]`,
-                item.priority
-            );
-
-            formData.append(
-                `items[${index}][is_active]`,
-                item.is_active ? '1' : '0'
-            );
+            formData.append(`items[${index}][gallery_category_id]`, item.gallery_category_id);
+            formData.append(`items[${index}][image]`, item.file);
+            formData.append(`items[${index}][title]`, item.title);
+            formData.append(`items[${index}][short_description]`, item.short_description);
+            formData.append(`items[${index}][long_description]`, item.long_description);
+            formData.append(`items[${index}][priority]`, item.priority);
+            formData.append(`items[${index}][is_active]`, item.is_active ? '1' : '0');
         });
 
-        await axios.post(
-            '/admin/data/gallery/images',
-            formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            }
-        );
+        await axios.post('/admin/data/gallery/images', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
 
         uploadModal.hide();
-
         await loadData();
-
         uploadItems.value = [];
-
     } catch (error) {
         console.error('Upload error:', error);
-
-        alert(
-            error.response?.data?.message ||
-            'Unable to upload images.'
-        );
+        alert(error.response?.data?.message || 'Unable to upload images.');
     } finally {
         saving.value = false;
     }
 };
-
 
 const openEditModal = image => {
     editForm.id = image.id;
@@ -932,18 +493,14 @@ const openEditModal = image => {
     editForm.currentImage = image.image;
     editForm.file = null;
 
-    if (editInput.value) {
-        editInput.value.value = '';
-    }
+    if (editInput.value) editInput.value.value = '';
 
     editImageModal.show();
 };
 
-
 const handleEditFile = event => {
     editForm.file = event.target.files[0] || null;
 };
-
 
 const updateImage = async () => {
     saving.value = true;
@@ -951,106 +508,47 @@ const updateImage = async () => {
     try {
         const formData = new FormData();
 
-        formData.append(
-            'gallery_category_id',
-            editForm.gallery_category_id
-        );
+        formData.append('gallery_category_id', editForm.gallery_category_id);
+        formData.append('title', editForm.title);
+        formData.append('short_description', editForm.short_description);
+        formData.append('long_description', editForm.long_description);
+        formData.append('priority', editForm.priority);
+        formData.append('is_active', editForm.is_active ? '1' : '0');
 
-        formData.append(
-            'title',
-            editForm.title
-        );
+        if (editForm.file) formData.append('image', editForm.file);
 
-        formData.append(
-            'short_description',
-            editForm.short_description
-        );
-
-        formData.append(
-            'long_description',
-            editForm.long_description
-        );
-
-        formData.append(
-            'priority',
-            editForm.priority
-        );
-
-        formData.append(
-            'is_active',
-            editForm.is_active ? '1' : '0'
-        );
-
-        if (editForm.file) {
-            formData.append(
-                'image',
-                editForm.file
-            );
-        }
-
-        await axios.post(
-            `/admin/data/gallery/images/${editForm.id}`,
-            formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            }
-        );
+        await axios.post(`/admin/data/gallery/images/${editForm.id}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
 
         editImageModal.hide();
-
         await loadData();
-
     } catch (error) {
         console.error('Image update error:', error);
-
-        alert(
-            error.response?.data?.message ||
-            'Unable to update image.'
-        );
+        alert(error.response?.data?.message || 'Unable to update image.');
     } finally {
         saving.value = false;
     }
 };
 
-
 const deleteImage = async image => {
-    if (!confirm(`Delete "${image.title}"?`)) {
-        return;
-    }
+    if (!confirm(`Delete "${image.title}"?`)) return;
 
     try {
-        await axios.delete(
-            `/admin/data/gallery/images/${image.id}`
-        );
-
+        await axios.delete(`/admin/data/gallery/images/${image.id}`);
         await loadData();
-
     } catch (error) {
         console.error('Image delete error:', error);
-
-        alert(
-            error.response?.data?.message ||
-            'Unable to delete image.'
-        );
+        alert(error.response?.data?.message || 'Unable to delete image.');
     }
 };
 
-
 onMounted(() => {
-    categoryModal = new Modal(
-        document.getElementById('categoryModal')
-    );
-
-    uploadModal = new Modal(
-        document.getElementById('uploadModal')
-    );
-
-    editImageModal = new Modal(
-        document.getElementById('editImageModal')
-    );
-
+    categoryModal = new Modal(document.getElementById('categoryModal'));
+    uploadModal = new Modal(document.getElementById('uploadModal'));
+    editImageModal = new Modal(document.getElementById('editImageModal'));
     loadData();
 });
 </script>

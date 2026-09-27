@@ -80,6 +80,11 @@
                     </span>
                 </router-link>
 
+                <router-link to="/admin/social-media" class="sidebar-link" active-class="active">
+                    <i class="bi bi-share"></i>
+                    <span>Social Media</span>
+                </router-link>
+
 
                 <!-- Skills -->
                 <router-link
